@@ -2,7 +2,7 @@
   "name": "github-stat",
   "version": "0.0.1",
   "description": "Github activity analysis",
-  "homepage": "https://github-stat.tophackr.com",
+  "homepage": "https://gitstat.tophackr.com",
   "bugs": {
     "url": "https://github.com/tophackr/github-stat/issues",
     "email": "tophackr@icloud.com"
