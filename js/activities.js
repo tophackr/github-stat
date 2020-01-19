@@ -2,65 +2,80 @@
     home.select('meta[property="og:url"]').content += `/${username}`;
     if (username !== '') {
         const response_user = await fetch(`https://api.github.com/users/${username}`);
-        const json_user = await response_user.json();
-
-        if (json_user.message === 'Not Found') {
+        if (response_user.ok !== true) {
             home.select('#loading').classList.add('d-none');
             home.select('#notfound').classList.remove('d-none');
             home.select('.navbar').classList.add('d-flex');
             home.select('.navbar').classList.remove('d-none');
             return false;
         }
-
-        const response_rep = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
         const response_event = await fetch(`https://api.github.com/users/${username}/events/public`);
+        const response_rep = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+        const json_user = await response_user.json();
         const json_rep = await response_rep.json();
         const json_event = await response_event.json();
 
+        const gitSearchElement = home.select('#search_first');
+        const gitAvatarElement = home.select('#avatar');
+        const gitAvatarTwitter = home.select('meta[name="twitter:image"]');
+        const gitAvatarOG = home.select('meta[property="og:image"]');
+        const gitNameElement = home.select('#name');
+        const gitTitle = home.select('title');
+        const gitTitleTwitter = home.select('meta[name="twitter:title"]');
+        const gitTitleOG = home.select('meta[property="og:title"]');
+        const gitBlogElement = home.select('#blog');
+        const gitCompanyElement = home.select('#company');
+        const gitMoreElement = home.select('#more');
+        const gitDescription = home.select('meta[name="description"]');
+        const gitDescriptionTwitter = home.select('meta[name="twitter:description"]');
+        const gitDescriptionOG = home.select('meta[property="og:description"]');
+        const gitActivitiesElement = home.select('#activities');
+
         let allStars = 0;
         let allForks = 0;
+        let allIssues = 0;
         let languages = [];
         json_rep.forEach(repo => {
             allStars += repo.stargazers_count;
             allForks += repo.forks_count;
+            allIssues += repo.open_issues_count;
             languages.push(repo.language);
         });
 
-        const gitSearchElement = home.select('#search_first');
+        // username in search bar
         gitSearchElement.value = json_user.login;
 
-        const gitAvatarElement = home.select('#avatar');
+        // avatar
         gitAvatarElement.src = json_user.avatar_url;
-        home.select('meta[name="twitter:image"]').content = json_user.avatar_url;
-        home.select('meta[property="og:image"]').content = json_user.avatar_url;
+        gitAvatarTwitter.content = json_user.avatar_url;
+        gitAvatarOG.content = json_user.avatar_url;
 
-        const gitNameElement = home.select('#name');
-        gitNameElement.href = json_user.html_url;
-        if (json_user.name === null) {
+        gitNameElement.href = json_user.html_url; // url to name
+        if (json_user.name === null) { // login if name 'null'
             gitNameElement.textContent = json_user.login;
-            home.select('title').textContent = `${json_user.login} | GitHub Stat`;
-            home.select('meta[name="twitter:title"]').content = json_user.login;
-            home.select('meta[property="og:title"]').content = json_user.login;
-        } else {
+            gitTitle.textContent = `${json_user.login} | GitHub Stat`;
+            gitTitleTwitter.content = json_user.login;
+            gitTitleOG.content = json_user.login;
+        } else { // name
             gitNameElement.textContent = json_user.name;
-            home.select('title').textContent = `${json_user.name} | GitHub Stat`;
-            home.select('meta[name="twitter:title"]').content = json_user.name;
-            home.select('meta[property="og:title"]').content = json_user.name;
+            gitTitle.textContent = `${json_user.name} | GitHub Stat`;
+            gitTitleTwitter.content = json_user.name;
+            gitTitleOG.content = json_user.name;
         }
-        if (json_user.site_admin === true) {
+        if (json_user.site_admin === true) { // check isadmin?
             gitNameElement.classList.remove('text-body');
             gitNameElement.classList.add('text-primary');
         }
 
-        const gitBlogElement = home.select('#blog');
+        // blog url
         if (json_user.blog !== '') {
             gitNameElement.innerHTML += '<br>';
             gitBlogElement.href = json_user.blog; // todo: fix for non http url
             gitBlogElement.textContent = `${json_user.blog.replace(/^(http:|https:)?\/*/i,"")}`;
         }
 
+        // company
         if (json_user.company !== null) {
-            const gitCompanyElement = home.select('#company');
             if (json_user.blog !== '') 
                 gitBlogElement.innerHTML += '<br>';
             else 
@@ -69,13 +84,15 @@
             gitCompanyElement.innerHTML = `<i class="fas fa-users fa-fw mr-2"></i>${json_user.company}`;
         }
 
-        const gitMoreElement = home.select('#more');
+        // bio
         if (json_user.bio !== null) {
             gitMoreElement.innerHTML += `<li class="list-group-item"><small class="text-muted">Bio:</small><p class="m-0">${json_user.bio}</p></li>`;
-            home.select('meta[name="description"]').content = json_user.bio;
-            home.select('meta[name="twitter:description"]').content = json_user.bio;
-            home.select('meta[property="og:description"]').content = json_user.bio;
+            gitDescription.content = json_user.bio;
+            gitDescriptionTwitter.content = json_user.bio;
+            gitDescriptionOG.content = json_user.bio;
         }
+
+        // counts
         gitMoreElement.innerHTML += `
         <li class="list-group-item d-flex flex-column">
             <div><div class="float-left text-muted">Followers</div><div class="text-monospace float-right">${json_user.followers}</div></div>
@@ -84,21 +101,24 @@
             <div><div class="float-left text-muted">Public Gists</div><div class="text-monospace float-right">${json_user.public_gists}</div></div>
             <div><div class="float-left text-muted">Stars Received</div><div class="text-monospace float-right">${allStars}</div></div>
             <div><div class="float-left text-muted">Forks by users</div><div class="text-monospace float-right">${allForks}</div></div>
+            <div><div class="float-left text-muted">Open Issues</div><div class="text-monospace float-right">${allIssues}</div></div>
         </li>`;
 
+        // languages badges
         let langBadge = [];
         for (let lang of languages.filter(function(elem, index, self){return index == self.indexOf(elem);}).filter(Boolean))
             langBadge += `<span class="badge badge-primary">${lang}</span>\n`;
         if (langBadge != '')
             gitMoreElement.innerHTML += `<li class="list-group-item">${langBadge}</li>`;
 
-        const gitAboutElement = home.select('#about');
-        gitAboutElement.innerHTML = `<small class="text-muted">Joined</small><p>${isDate(json_user.created_at)}</p>`;
+        // about (join date, location, last update)
+        let gitAboutElement = `<small class="text-muted">Joined</small><p>${isDate(json_user.created_at)}</p>`;
         if (json_user.location !== null)
-            gitAboutElement.innerHTML += `<small class="text-muted">Location</small><p class="text-primary">${json_user.location}</p>`;
-        gitAboutElement.innerHTML += `<p class="text-muted m-0">Last Updated on ${isDate(json_user.updated_at)}</p>`;
+            gitAboutElement += `<small class="text-muted">Location</small><p class="text-primary">${json_user.location}</p>`;
+        gitAboutElement += `<p class="text-muted m-0">Last Updated on ${isDate(json_user.updated_at)}</p>`;
+        gitMoreElement.innerHTML += `<li class="list-group-item">${gitAboutElement}</li>`;
 
-        const gitActivitiesElement = home.select('#activities');
+        // activities
         let plusIcon, branchIcon, trashIcon, commentIcon, starIcon;
         plusIcon = `<i class="fas fa-plus-circle fa-fw text-success"></i>`;
         branchIcon = `<i class="fas fa-code-branch fa-fw text-success"></i>`;
