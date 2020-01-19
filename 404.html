@@ -149,18 +149,11 @@ function isClick() {
     else 
         window.location = `/${home.select('#search_first').value}`;
 }
-function urlNF(url) {
-    var http = new XMLHttpRequest();
-    http.open('HEAD', url, false);
-    http.send();
-    if (http.status == 404) return false;
-}
 
 (async () => {
     home.select('meta[property="og:url"]').content += `/${username}`;
     if (username !== '') {
         const response_user = await fetch(`https://api.github.com/users/${username}`);
-        urlNF(response_user);
         const json_user = await response_user.json();
 
         if (json_user.message === 'Not Found') {
