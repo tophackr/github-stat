@@ -164,7 +164,7 @@
                     return false;
                     break;
             }
-            gitActivitiesElement.innerHTML += `<li class="list-group-item"><div class="row"><div class="col-md-9">${isStr}</div><div class="col-md-3 text-muted text-right">${isTimeAgo(activities.created_at)}</div></div></li>`;
+            gitActivitiesElement.innerHTML += `<li class="list-group-item"><div class="row"><div class="col-9">${isStr}</div><div class="col-3 text-muted text-right">${isTimeAgo(activities.created_at)}</div></div></li>`;
         });
         home.select('#loading').classList.add('d-none');
         home.select('#profile').classList.remove('d-none');
