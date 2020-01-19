@@ -76,7 +76,15 @@
             home.select('meta[name="twitter:description"]').content = json_user.bio;
             home.select('meta[property="og:description"]').content = json_user.bio;
         }
-        gitMoreElement.innerHTML += `<li class="list-group-item d-flex flex-column"><div><div class="float-left text-muted">Followers</div><div class="float-right">${json_user.followers}</div></div><div><div class="float-left text-muted">Following</div><div class="float-right">${json_user.following}</div></div><div><div class="float-left text-muted">Public Repositories</div><div class="float-right">${json_user.public_repos}</div></div><div><div class="float-left text-muted">Public Gists</div><div class="float-right">${json_user.public_gists}</div></div><div><div class="float-left text-muted">Stars Received</div><div class="float-right">${allStars}</div></div><div><div class="float-left text-muted">Forks by users</div><div class="float-right">${allForks}</div></div></li>`;
+        gitMoreElement.innerHTML += `
+        <li class="list-group-item d-flex flex-column">
+            <div><div class="float-left text-muted">Followers</div><div class="text-monospace float-right">${json_user.followers}</div></div>
+            <div><div class="float-left text-muted">Following</div><div class="text-monospace float-right">${json_user.following}</div></div>
+            <div><div class="float-left text-muted">Public Repositories</div><div class="text-monospace float-right">${json_user.public_repos}</div></div>
+            <div><div class="float-left text-muted">Public Gists</div><div class="text-monospace float-right">${json_user.public_gists}</div></div>
+            <div><div class="float-left text-muted">Stars Received</div><div class="text-monospace float-right">${allStars}</div></div>
+            <div><div class="float-left text-muted">Forks by users</div><div class="text-monospace float-right">${allForks}</div></div>
+        </li>`;
 
         let langBadge = [];
         for (let lang of languages.filter(function(elem, index, self){return index == self.indexOf(elem);}).filter(Boolean))
