@@ -26,9 +26,9 @@
     <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(57077428, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, trackHash:true }); </script>
 </head>
 <body>
-    <div class="container-fluid container-md my-4">
+    <div class="container-fluid container-md">
 
-        <nav class="navbar navbar-expand navbar-light d-flex flex-column flex-md-row my-4 px-0">
+        <nav class="navbar navbar-expand navbar-light flex-column flex-md-row my-4 px-0 d-none">
 
             <a class="navbar-brand" href="/">
                 <i class="fab fa-github fa-fw"></i>
@@ -45,13 +45,13 @@
 
         </nav><!-- /.navbar -->
 
-        <div id="loading" class="row align-items-center h-50">
+        <div id="loading" class="row align-items-center h-100">
             <div class="col-md-12 text-center">
                 <i class="fas fa-circle-notch fa-fw fa-3x fa-spin text-primary"></i>
             </div>
         </div><!-- /#loading -->
 
-        <div id="main" class="row justify-content-center align-items-center h-75 d-none">
+        <div id="main" class="row justify-content-center align-items-center h-100 d-none">
             <div class="col-11 col-md-8 text-center">
 
                 <div class="d-none d-sm-block display-4 mb-4">
@@ -85,7 +85,7 @@
             </div>
         </div><!-- /#notfound -->
 
-        <div id="profile" class="row d-none">
+        <div id="profile" class="row mb-4 d-none">
 
             <div class="col-md-4 mb-3">
                 <div class="card">
@@ -138,7 +138,7 @@ const home = {
 
 const username = location.pathname.replace('/', '');
 
-if (username === '') {
+if (username === '') { // loading main
     home.select('#loading').classList.add('d-none');
     home.select('#main').classList.remove('d-none');
 }
@@ -311,12 +311,16 @@ function isClick() {
         });
     }
 
-    if (user === true) {
+    if (user === true) { // loading profile
         home.select('#loading').classList.add('d-none');
         home.select('#profile').classList.remove('d-none');
-    } else if (user === false) {
+        home.select('.navbar').classList.add('d-flex');
+        home.select('.navbar').classList.remove('d-none');
+    } else if (user === false) { // loading 404
         home.select('#loading').classList.add('d-none');
         home.select('#notfound').classList.remove('d-none');
+        home.select('.navbar').classList.add('d-flex');
+        home.select('.navbar').classList.remove('d-none');
     }
 
     function isDate(d) {
