@@ -138,23 +138,29 @@ const home = {
 
 const username = location.pathname.replace('/', '');
 
-if (username === '') { // loading main
+if (username === '') {
     home.select('#loading').classList.add('d-none');
     home.select('#main').classList.remove('d-none');
 }
 
 function isClick() {
-    if (home.select('#search_second').value !== '') {
+    if (home.select('#search_second').value !== '')
         window.location = `/${home.select('#search_second').value}`;
-    } else {
+    else 
         window.location = `/${home.select('#search_first').value}`;
-    }
+}
+function urlNF(url) {
+    var http = new XMLHttpRequest();
+    http.open('HEAD', url, false);
+    http.send();
+    if (http.status == 404) return false;
 }
 
 (async () => {
     home.select('meta[property="og:url"]').content += `/${username}`;
     if (username !== '') {
         const response_user = await fetch(`https://api.github.com/users/${username}`);
+        urlNF(response_user);
         const json_user = await response_user.json();
 
         if (json_user.message === 'Not Found') {
@@ -214,7 +220,10 @@ function isClick() {
 
         if (json_user.company !== null) {
             const gitCompanyElement = home.select('#company');
-            if (json_user.blog !== '') { gitBlogElement.innerHTML += '<br>'; } else { gitNameElement.innerHTML += '<br>'; }
+            if (json_user.blog !== '') 
+                gitBlogElement.innerHTML += '<br>';
+            else 
+                gitNameElement.innerHTML += '<br>';
             gitCompanyElement.className = `badge badge-primary`;
             gitCompanyElement.innerHTML = `<i class="fas fa-users fa-fw mr-2"></i>${json_user.company}`;
         }
@@ -229,18 +238,15 @@ function isClick() {
         gitMoreElement.innerHTML += `<li class="list-group-item d-flex flex-column"><div><div class="float-left text-muted">Followers</div><div class="float-right">${json_user.followers}</div></div><div><div class="float-left text-muted">Following</div><div class="float-right">${json_user.following}</div></div><div><div class="float-left text-muted">Public Repositories</div><div class="float-right">${json_user.public_repos}</div></div><div><div class="float-left text-muted">Public Gists</div><div class="float-right">${json_user.public_gists}</div></div><div><div class="float-left text-muted">Stars Received</div><div class="float-right">${allStars}</div></div><div><div class="float-left text-muted">Forks by users</div><div class="float-right">${allForks}</div></div></li>`;
 
         let langBadge = [];
-        for (let lang of languages.filter(function(elem, index, self){return index == self.indexOf(elem);}).filter(Boolean)) {
+        for (let lang of languages.filter(function(elem, index, self){return index == self.indexOf(elem);}).filter(Boolean))
             langBadge += `<span class="badge badge-primary">${lang}</span>\n`;
-        }
-        if (langBadge != '') {
+        if (langBadge != '')
             gitMoreElement.innerHTML += `<li class="list-group-item">${langBadge}</li>`;
-        }
 
         const gitAboutElement = home.select('#about');
         gitAboutElement.innerHTML = `<small class="text-muted">Joined</small><p>${isDate(json_user.created_at)}</p>`;
-        if (json_user.location !== null) {
+        if (json_user.location !== null)
             gitAboutElement.innerHTML += `<small class="text-muted">Location</small><p class="text-primary">${json_user.location}</p>`;
-        }
         gitAboutElement.innerHTML += `<p class="text-muted m-0">Last Updated on ${isDate(json_user.updated_at)}</p>`;
 
         const gitActivitiesElement = home.select('#activities');
