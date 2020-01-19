@@ -153,7 +153,6 @@ function isClick() {
 
 (async () => {
     home.select('meta[property="og:url"]').content += `/${username}`;
-    var user = null;
     if (username !== '') {
         const response_user = await fetch(`https://api.github.com/users/${username}`);
         const response_rep = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
@@ -162,9 +161,11 @@ function isClick() {
         const json_rep = await response_rep.json();
         const json_event = await response_event.json();
 
-        user = true;
         if (json_user.message === 'Not Found') {
-            user = false;
+            home.select('#loading').classList.add('d-none');
+            home.select('#notfound').classList.remove('d-none');
+            home.select('.navbar').classList.add('d-flex');
+            home.select('.navbar').classList.remove('d-none');
             return false;
         }
 
@@ -309,16 +310,8 @@ function isClick() {
             }
             gitActivitiesElement.innerHTML += `<li class="list-group-item"><div class="row"><div class="col-md-9">${isStr}</div><div class="col-md-3 text-muted text-right">${isTimeAgo(activities.created_at)}</div></div></li>`;
         });
-    }
-
-    if (user === true) { // loading profile
         home.select('#loading').classList.add('d-none');
         home.select('#profile').classList.remove('d-none');
-        home.select('.navbar').classList.add('d-flex');
-        home.select('.navbar').classList.remove('d-none');
-    } else if (user === false) { // loading 404
-        home.select('#loading').classList.add('d-none');
-        home.select('#notfound').classList.remove('d-none');
         home.select('.navbar').classList.add('d-flex');
         home.select('.navbar').classList.remove('d-none');
     }
