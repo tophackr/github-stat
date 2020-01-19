@@ -28,16 +28,18 @@
 <body>
     <div class="container-fluid container-md my-4">
 
-        <nav class="navbar navbar-expand navbar-light my-4 px-0">
+        <nav class="navbar navbar-expand navbar-light d-flex flex-column flex-md-row my-4 px-0">
 
             <a class="navbar-brand" href="/">
                 <i class="fab fa-github fa-fw"></i>
                 GitHub Stat
             </a>
 
-            <form onsubmit="isClick(); return false;" class="form-inline ml-auto">
-                <span class="navbar-text">github.com/</span>
-                <input id="search_first" class="form-control mx-2" type="text" placeholder="Search" aria-label="Search">
+            <form onsubmit="isClick(); return false;" class="navbar-nav form-group row ml-md-auto">
+                <span class="navbar-text col-form-label">github.com/</span>
+                <div class="col">
+                    <input id="search_first" class="form-control" type="text" placeholder="Search" aria-label="Search">
+                </div>
                 <button class="btn btn-outline-primary" type="button" onclick="isClick;">Search</button>
             </form>
 
@@ -59,7 +61,7 @@
 
                 <form onsubmit="isClick(); return false;" class="form-group row">
                     <span class="col-form-label">github.com/</span>
-                    <div class="col mx-2">
+                    <div class="col">
                         <input id="search_second" class="form-control" type="text" placeholder="Search" aria-label="Search">
                     </div>
                     <button class="btn btn-outline-primary" type="button" onclick="isClick;">Search</button>
