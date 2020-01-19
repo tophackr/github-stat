@@ -155,11 +155,7 @@ function isClick() {
     home.select('meta[property="og:url"]').content += `/${username}`;
     if (username !== '') {
         const response_user = await fetch(`https://api.github.com/users/${username}`);
-        const response_rep = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
-        const response_event = await fetch(`https://api.github.com/users/${username}/events/public`);
         const json_user = await response_user.json();
-        const json_rep = await response_rep.json();
-        const json_event = await response_event.json();
 
         if (json_user.message === 'Not Found') {
             home.select('#loading').classList.add('d-none');
@@ -168,6 +164,11 @@ function isClick() {
             home.select('.navbar').classList.remove('d-none');
             return false;
         }
+
+        const response_rep = await fetch(`https://api.github.com/users/${username}/repos?per_page=100`);
+        const response_event = await fetch(`https://api.github.com/users/${username}/events/public`);
+        const json_rep = await response_rep.json();
+        const json_event = await response_event.json();
 
         let allStars = 0;
         let allForks = 0;
