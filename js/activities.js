@@ -119,11 +119,12 @@
         gitMoreElement.innerHTML += `<li class="list-group-item">${gitAboutElement}</li>`;
 
         // activities
-        let plusIcon, branchIcon, tagIcon, trashIcon, commentIcon, starIcon;
+        let plusIcon, branchIcon, tagIcon, trashIcon, banIcon, commentIcon, starIcon;
         plusIcon = `<i class="fas fa-plus-circle fa-fw text-success"></i>`;
         branchIcon = `<i class="fas fa-code-branch fa-fw text-success"></i>`;
         tagIcon = `<i class="fas fa-tag fa-fw text-success"></i>`;
         trashIcon = `<i class="fas fa-trash-alt fa-fw text-danger"></i>`;
+        banIcon = `<i class="fas fa-ban fa-fw text-danger"></i>`;
         commentIcon = `<i class="fas fa-comment-dots fa-fw text-muted"></i>`;
         starIcon = `<i class="fas fa-star fa-fw text-warning"></i>`;
         // todo: ReleaseEvent (tag)
@@ -163,7 +164,7 @@
                     break;
                 case "PullRequestEvent":
                     if (activities.payload.action === "closed") {
-                        isStr = trashIcon;
+                        isStr = banIcon;
                     } else {
                         isStr = plusIcon;
                     }
@@ -174,7 +175,7 @@
                     break;
                 case "IssuesEvent":
                     if (activities.payload.action === "closed") {
-                        isStr = trashIcon;
+                        isStr = banIcon;
                     } else {
                         isStr = plusIcon;
                     }
