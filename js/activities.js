@@ -119,12 +119,14 @@
         gitMoreElement.innerHTML += `<li class="list-group-item">${gitAboutElement}</li>`;
 
         // activities
-        let plusIcon, branchIcon, trashIcon, commentIcon, starIcon;
+        let plusIcon, branchIcon, tagIcon, trashIcon, commentIcon, starIcon;
         plusIcon = `<i class="fas fa-plus-circle fa-fw text-success"></i>`;
         branchIcon = `<i class="fas fa-code-branch fa-fw text-success"></i>`;
+        tagIcon = `<i class="fas fa-tag fa-fw text-success"></i>`;
         trashIcon = `<i class="fas fa-trash-alt fa-fw text-danger"></i>`;
         commentIcon = `<i class="fas fa-comment-dots fa-fw text-muted"></i>`;
         starIcon = `<i class="fas fa-star fa-fw text-warning"></i>`;
+        // todo: ReleaseEvent (tag)
         json_event.forEach(activities => {
             repoURL = `<a href="${isURL(activities.repo.url)}">${activities.repo.name}</a>`;
             switch (activities.type) {
@@ -141,6 +143,8 @@
                 case "CreateEvent":
                     if (activities.payload.ref_type === "branch") {
                         isStr = branchIcon;
+                    } else if (activities.payload.ref_type === "tag") {
+                        isStr = tagIcon;
                     } else {
                         isStr = plusIcon;
                     }
