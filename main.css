@@ -1,0 +1,12 @@
+#tab li button{
+    color: #007bff;
+}
+#tab li button.active {
+    color: #000;
+}
+.tab ul {
+    display: none;
+}
+.tab ul.active {
+    display: block;
+}
