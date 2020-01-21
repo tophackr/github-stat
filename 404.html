@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
 
     <link rel="icon" href="/favicon.png" sizes="32x32">
 
@@ -105,16 +106,49 @@
             </div><!-- /.col -->
 
             <div class="col-lg-8">
-                <ul id="activities" class="list-group">
-                    <h5 class="list-group-item m-0">Latest activities</h5>
-                </ul>
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 id="title" class="m-0">Latest activities</h5>
+                    </div>
+
+                    <ul id="tab" class="list-group list-group-flush">
+                        <li class="list-group-item p-0"></li>
+                        <li class="list-group-item text-center py-2" role="tablist">
+                            <button id="activities-tab" class="btn p-0 active" data-toggle="tab" href="#activities" role="tab" aria-controls="activities" aria-selected="true">
+                                <small>Latest activities</small>
+                            </button>
+                            <button id="repositories-tab" class="btn p-0" data-toggle="tab" href="#repositories" role="tab" aria-controls="repositories" aria-selected="false">
+                                <small>Repositories</small>
+                            </button>
+                            <button id="starred-rep-tab" class="btn p-0" data-toggle="tab" href="#starred-rep" role="tab" aria-controls="starred-rep" aria-selected="false">
+                                <small>Starred</small>
+                            </button>
+                            <button id="followers-tab" class="btn p-0" data-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">
+                                <small>Followers</small>
+                            </button>
+                            <button id="following-tab" class="btn p-0" data-toggle="tab" href="#following" role="tab" aria-controls="following" aria-selected="false">
+                                <small>Following</small>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab">
+                        <ul id="activities" class="list-group list-group-flush active" role="tabpanel" aria-labelledby="activities-tab"></ul>
+                        <ul id="repositories" class="list-group list-group-flush" role="tabpanel" aria-labelledby="repositories-tab"></ul>
+                        <ul id="starred-rep" class="list-group list-group-flush" role="tabpanel" aria-labelledby="starred-tab"></ul>
+                        <ul id="followers" class="list-group list-group-flush" role="tabpanel" aria-labelledby="followers-tab"></ul>
+                        <ul id="following" class="list-group list-group-flush" role="tabpanel" aria-labelledby="following-tab"></ul>
+                    </div>
+
+                </div>
             </div><!-- /.col -->
 
         </div><!-- /#profile -->
 
     </div><!-- /.container -->
-    <script src="js/config.js"></script>
-    <script async src="js/activities.js"></script>
-    <script src="js/function.js"></script>
+    <script async src="home.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
