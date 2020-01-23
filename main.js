@@ -242,14 +242,28 @@ for (let tab of tabUpdate) {
     const gitStarRepElement = home.select('#starred-rep');
     const gitFolowersElement = home.select('#followers');
     const gitFollowingElement = home.select('#following');
+    const tabStarRepElement = home.select('#starred-rep-tab');
+    const tabFolowersElement = home.select('#followers-tab');
+    const tabFollowingElement = home.select('#following-tab');
 
-    var user;
+    var user, org;
 
     json_repos.forEach(repositories => {
         gitRepoElement.innerHTML += `<li class="list-group-item"><i class="fas fa-book fa-fw text-muted"></i> <a href="${repositories.html_url}">${repositories.full_name}</a></li>`;
         user = repositories.owner.html_url;
+        org = repositories.owner.type;
     });
     gitRepoElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=repositories"><small>View all on GitHub</small></a></li>`;
+
+    if (org === 'Organization') {
+        gitStarRepElement.remove();
+        gitFolowersElement.remove();
+        gitFollowingElement.remove();
+        tabStarRepElement.remove();
+        tabFolowersElement.remove();
+        tabFollowingElement.remove();
+        return false;
+    }
 
     json_starred_repos.forEach(stars => {
         gitStarRepElement.innerHTML += `<li class="list-group-item"><i class="fas fa-star fa-fw text-warning"></i> <a href="${stars.html_url}">${stars.full_name}</a></li>`;
