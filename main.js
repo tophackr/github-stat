@@ -134,13 +134,14 @@ if (username === '') {
     gitMoreElement.innerHTML += `<li class="list-group-item">${gitAboutElement}</li>`;
 
     // activities
-    let plusIcon, branchIcon, tagIcon, trashIcon, banIcon, commentIcon, starIcon;
+    let plusIcon, branchIcon, tagIcon, trashIcon, banIcon, commentIcon, pencilIcon, starIcon;
     plusIcon = `<i class="fas fa-plus-circle fa-fw text-success"></i>`;
     branchIcon = `<i class="fas fa-code-branch fa-fw text-success"></i>`;
     tagIcon = `<i class="fas fa-tag fa-fw text-success"></i>`;
     trashIcon = `<i class="fas fa-trash-alt fa-fw text-danger"></i>`;
     banIcon = `<i class="fas fa-ban fa-fw text-danger"></i>`;
     commentIcon = `<i class="fas fa-comment-dots fa-fw text-muted"></i>`;
+    pencilIcon = `<i class="fas fa-pencil-alt fa-fw text-muted"></i>`;
     starIcon = `<i class="fas fa-star fa-fw text-warning"></i>`;
     json_event.forEach(activities => {
         repoURL = `<a href="${isURL(activities.repo.url)}">${activities.repo.name}</a>`;
@@ -172,6 +173,9 @@ if (username === '') {
                 break;
             case "ReleaseEvent":
                 isStr = `${tagIcon} Released a <a href="${activities.html_url}">${activities.payload.release.name}</a> in ${repoURL}`;
+                break;
+            case "GollumEvent":
+                isStr = `${pencilIcon} Edited a wiki page <a href="${activities.payload.pages[0].html_url}">${activities.payload.pages[0].title}</a> in ${repoURL}`;
                 break;
             case "DeleteEvent":
                 isStr = `${trashIcon} Deleted a ${activities.payload.ref_type} ${activities.payload.ref} from ${repoURL}`;
@@ -230,23 +234,27 @@ for (let tab of tabUpdate) {
     if (username === '') return false;
     const response_repos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
     const response_starred_repos =  await fetch(`https://api.github.com/users/${username}/starred?sort=updated`);
+    const response_gists =  await fetch(`https://api.github.com/users/${username}/gists?sort=updated`);
     const response_followers = await fetch(`https://api.github.com/users/${username}/followers`);
     const response_following =  await fetch(`https://api.github.com/users/${username}/following`);
 
     const json_repos = await response_repos.json();
     const json_starred_repos = await response_starred_repos.json();
+    const json_gists = await response_gists.json();
     const json_followers = await response_followers.json();
     const json_following = await response_following.json();
 
     const gitRepoElement = home.select('#repositories');
     const gitStarRepElement = home.select('#starred-rep');
+    const gitGistsElement = home.select('#gists');
     const gitFolowersElement = home.select('#followers');
     const gitFollowingElement = home.select('#following');
     const tabStarRepElement = home.select('#starred-rep-tab');
+    const tabGistsElement = home.select('#gists-tab');
     const tabFolowersElement = home.select('#followers-tab');
     const tabFollowingElement = home.select('#following-tab');
 
-    var user, org;
+    var user, usergist, org;
 
     json_repos.forEach(repositories => {
         gitRepoElement.innerHTML += `<li class="list-group-item"><i class="fas fa-book fa-fw text-muted"></i> <a href="${repositories.html_url}">${repositories.full_name}</a></li>`;
@@ -257,9 +265,11 @@ for (let tab of tabUpdate) {
 
     if (org === 'Organization') {
         gitStarRepElement.remove();
+        gitGistsElement.remove();
         gitFolowersElement.remove();
         gitFollowingElement.remove();
         tabStarRepElement.remove();
+        tabGistsElement.remove();
         tabFolowersElement.remove();
         tabFollowingElement.remove();
         return false;
@@ -269,6 +279,17 @@ for (let tab of tabUpdate) {
         gitStarRepElement.innerHTML += `<li class="list-group-item"><i class="fas fa-star fa-fw text-warning"></i> <a href="${stars.html_url}">${stars.full_name}</a></li>`;
     });
     gitStarRepElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=stars"><small>View all on GitHub</small></a></li>`;
+
+    json_gists.forEach(gist => {
+        let file;
+        for (let i in gist.files) {
+            file = i;
+            if (true) break;
+        }
+        gitGistsElement.innerHTML += `<li class="list-group-item"><i class="far fa-file-code fa-fw text-muted"></i> <a href="${gist.html_url}">${gist.files[file].filename}</a></li>`;
+        usergist = gist.owner.login;
+    });
+    gitGistsElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="https://gist.github.com/${usergist}"><small>View all on GitHub</small></a></li>`;
 
     json_followers.forEach(followers => {
         gitFolowersElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${followers.avatar_url}"><a href="${followers.html_url}">${followers.login}</a></li>`;
