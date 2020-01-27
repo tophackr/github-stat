@@ -264,7 +264,7 @@ for (let tab of tabUpdate) {
         user = repositories.owner.html_url;
         org = repositories.owner.type;
     });
-    if (json_repos.length > 30)
+    if (json_repos.length >= 30)
         gitRepoElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=repositories"><small>View all on GitHub</small></a></li>`;
 
     if (org === 'Organization') {
@@ -284,7 +284,7 @@ for (let tab of tabUpdate) {
     json_starred_repos.forEach(stars => {
         gitStarRepElement.innerHTML += `<li class="list-group-item"><i class="fas fa-star fa-fw text-warning"></i> <a href="${stars.html_url}">${stars.full_name}</a></li>`;
     });
-    if (json_starred_repos.length > 30)
+    if (json_starred_repos.length >= 30)
         gitStarRepElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=stars"><small>View all on GitHub</small></a></li>`;
 
     if (json_gists != '')
@@ -298,7 +298,7 @@ for (let tab of tabUpdate) {
         gitGistsElement.innerHTML += `<li class="list-group-item"><i class="far fa-file-code fa-fw text-muted"></i> <a href="${gist.html_url}">${gist.files[file].filename}</a></li>`;
         usergist = gist.owner.login;
     });
-    if (json_gists.length > 30)
+    if (json_gists.length >= 30)
         gitGistsElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="https://gist.github.com/${usergist}"><small>View all on GitHub</small></a></li>`;
 
     if (json_followers != '')
@@ -306,7 +306,7 @@ for (let tab of tabUpdate) {
     json_followers.forEach(followers => {
         gitFollowersElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${followers.avatar_url}"><a href="${followers.html_url}">${followers.login}</a></li>`;
     });
-    if (json_followers.length > 30)
+    if (json_followers.length >= 30)
         gitFollowersElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=followers"><small>View all on GitHub</small></a></li>`;
 
     if (json_following != '')
@@ -314,7 +314,7 @@ for (let tab of tabUpdate) {
     json_following.forEach(following => {
         gitFollowingElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${following.avatar_url}"><a href="${following.html_url}">${following.login}</a></li>`;
     });
-    if (json_following.length > 30)
+    if (json_following.length >= 30)
         gitFollowingElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=following"><small>View all on GitHub</small></a></li>`;
 })();
 
