@@ -143,6 +143,8 @@ if (username === '') {
     commentIcon = `<i class="fas fa-comment-dots fa-fw text-muted"></i>`;
     pencilIcon = `<i class="fas fa-pencil-alt fa-fw text-muted"></i>`;
     starIcon = `<i class="fas fa-star fa-fw text-warning"></i>`;
+    if (json_event != '')
+        gitActivitiesElement.innerHTML = null;
     json_event.forEach(activities => {
         repoURL = `<a href="${isURL(activities.repo.url)}">${activities.repo.name}</a>`;
         switch (activities.type) {
@@ -229,7 +231,6 @@ for (let tab of tabUpdate) {
 }
 
 // (REPOSITORIES, STARS, FOLLOWERS, FOLLOWING)
-
 (async () => {
     if (username === '') return false;
     const response_repos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated`);
@@ -247,7 +248,7 @@ for (let tab of tabUpdate) {
     const gitRepoElement = home.select('#repositories');
     const gitStarRepElement = home.select('#starred-rep');
     const gitGistsElement = home.select('#gists');
-    const gitFolowersElement = home.select('#followers');
+    const gitFollowersElement = home.select('#followers');
     const gitFollowingElement = home.select('#following');
     const tabStarRepElement = home.select('#starred-rep-tab');
     const tabGistsElement = home.select('#gists-tab');
@@ -256,17 +257,20 @@ for (let tab of tabUpdate) {
 
     var user, usergist, org;
 
+    if (json_repos != '')
+        gitRepoElement.innerHTML = null;
     json_repos.forEach(repositories => {
         gitRepoElement.innerHTML += `<li class="list-group-item"><i class="fas fa-book fa-fw text-muted"></i> <a href="${repositories.html_url}">${repositories.full_name}</a></li>`;
         user = repositories.owner.html_url;
         org = repositories.owner.type;
     });
-    gitRepoElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=repositories"><small>View all on GitHub</small></a></li>`;
+    if (json_repos.length > 30)
+        gitRepoElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=repositories"><small>View all on GitHub</small></a></li>`;
 
     if (org === 'Organization') {
         gitStarRepElement.remove();
         gitGistsElement.remove();
-        gitFolowersElement.remove();
+        gitFollowersElement.remove();
         gitFollowingElement.remove();
         tabStarRepElement.remove();
         tabGistsElement.remove();
@@ -275,11 +279,16 @@ for (let tab of tabUpdate) {
         return false;
     }
 
+    if (json_starred_repos != '')
+        gitStarRepElement.innerHTML = null;
     json_starred_repos.forEach(stars => {
         gitStarRepElement.innerHTML += `<li class="list-group-item"><i class="fas fa-star fa-fw text-warning"></i> <a href="${stars.html_url}">${stars.full_name}</a></li>`;
     });
-    gitStarRepElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=stars"><small>View all on GitHub</small></a></li>`;
+    if (json_starred_repos.length > 30)
+        gitStarRepElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=stars"><small>View all on GitHub</small></a></li>`;
 
+    if (json_gists != '')
+        gitGistsElement.innerHTML = null;
     json_gists.forEach(gist => {
         let file;
         for (let i in gist.files) {
@@ -289,17 +298,24 @@ for (let tab of tabUpdate) {
         gitGistsElement.innerHTML += `<li class="list-group-item"><i class="far fa-file-code fa-fw text-muted"></i> <a href="${gist.html_url}">${gist.files[file].filename}</a></li>`;
         usergist = gist.owner.login;
     });
-    gitGistsElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="https://gist.github.com/${usergist}"><small>View all on GitHub</small></a></li>`;
+    if (json_gists.length > 30)
+        gitGistsElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="https://gist.github.com/${usergist}"><small>View all on GitHub</small></a></li>`;
 
+    if (json_followers != '')
+        gitFollowersElement.innerHTML = null;
     json_followers.forEach(followers => {
-        gitFolowersElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${followers.avatar_url}"><a href="${followers.html_url}">${followers.login}</a></li>`;
+        gitFollowersElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${followers.avatar_url}"><a href="${followers.html_url}">${followers.login}</a></li>`;
     });
-    gitFolowersElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=followers"><small>View all on GitHub</small></a></li>`;
+    if (json_followers.length > 30)
+        gitFollowersElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=followers"><small>View all on GitHub</small></a></li>`;
 
+    if (json_following != '')
+        gitFollowingElement.innerHTML = null;
     json_following.forEach(following => {
         gitFollowingElement.innerHTML += `<li class="list-group-item"><img class="img-fluid rounded col-1" src="${following.avatar_url}"><a href="${following.html_url}">${following.login}</a></li>`;
     });
-    gitFollowingElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=following"><small>View all on GitHub</small></a></li>`;
+    if (json_following.length > 30)
+        gitFollowingElement.innerHTML += `<li class="list-group-item text-center p-2"><a href="${user}?tab=following"><small>View all on GitHub</small></a></li>`;
 })();
 
 // FUNCTIONS
