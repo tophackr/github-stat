@@ -1,0 +1,46 @@
+{
+    "name": "github-stat",
+    "version": "0.0.1",
+    "private": false,
+    "homepage": "https://gitstat.tophackr.com",
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@mdx-js/loader": "^3.1.0",
+        "@mdx-js/react": "^3.1.0",
+        "@primer/styled-octicons": "^19.14.0",
+        "@reduxjs/toolkit": "^2.5.1",
+        "@vercel/speed-insights": "^1.1.0",
+        "clsx": "^2.1.1",
+        "dotenv": "^16.4.7",
+        "next": "15.1.6",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-hook-form": "^7.54.2",
+        "react-redux": "^9.2.0",
+        "redux": "^5.0.1",
+        "sonner": "^1.7.4"
+    },
+    "devDependencies": {
+        "@eslint/eslintrc": "^3",
+        "@octokit/types": "^13.7.0",
+        "@tailwindcss/typography": "^0.5.16",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.1",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "@types/react-redux": "^7.1.34",
+        "daisyui": "^4.12.23",
+        "eslint": "^9",
+        "eslint-config-next": "15.1.6",
+        "eslint-config-prettier": "^10.0.1",
+        "postcss": "^8",
+        "prettier": "^3.4.2",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^5"
+    }
+}
