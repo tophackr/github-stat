@@ -10,7 +10,7 @@ export function HomeLayout({ children }: PropsWithChildren) {
             )}
         >
             <div className={'hero-content text-center'}>
-                <div className='max-w-md'>{children}</div>
+                <div className={'max-w-md'}>{children}</div>
             </div>
         </main>
     )
